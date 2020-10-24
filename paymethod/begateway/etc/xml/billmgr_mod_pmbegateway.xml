@@ -21,10 +21,16 @@
           <input name="SHOP_ID" private="no" required="yes" type="text" />
         </field>
         <field name="shop_key">
-          <input name="SHOP_KEY" private="yes" required="yes" type="text" />
+          <input name="SHOP_KEY" private="no" required="yes" type="text" />
         </field>
         <field name="shop_public_key">
-          <input name="SHOP_PUBLIC_KEY" private="yes" required="yes" type="textarea" />
+          <input name="SHOP_PUBLIC_KEY" private="no" required="yes" type="text" zoom="5"/>
+        </field>
+        <field name="timeout">
+          <input name="TIMEOUT" private="no" required="no" type="text" check="int" checkargs="1,1000000"/>
+        </field>
+        <field name="attempts">
+          <input name="ATTEMPTS" private="no" required="no" type="text" check="int" checkargs="1,1000000"/>
         </field>
         <field name="test_mode">
           <input name="TEST_MODE" private="no" type="checkbox" />
@@ -51,6 +57,10 @@
       <msg name="hint_shop_key">Specifies a character string that your online store must use to authorize with BeGateway API.</msg>
       <msg name="shop_public_key">Shop public key</msg>
       <msg name="hint_shop_public_key">Specifies a character string that your online store must use to verify signature of messages from BeGateway API.</msg>
+      <msg name="timeout">Payment session timeout, minutes</msg>
+      <msg name="hint_timeout">Specifies how long to wait for a customer to complete their payment.</msg>
+      <msg name="attempts">Payments attempts</msg>
+      <msg name="hint_attempts">Specifies how many payment attempts a customer may do to complete their payment.</msg>
       <msg name="test_mode">Test mode</msg>
       <msg name="hint_test_mode">Indicates whether to process the payment in Test mode.</msg>
       <msg name="kassa">Use online kassa</msg>
@@ -73,6 +83,10 @@
       <msg name="hint_shop_key">Секретный ключ вашего магазина, который обеспечивает идентификацию и авторизацию отправителя запроса.</msg>
       <msg name="shop_public_key">Публичный ключ магазина</msg>
       <msg name="hint_shop_public_key">Публичный ключ вашего магазина, который проверяет подлинность запросов от BeGateway API.</msg>
+      <msg name="timeout">Время на оплату, минуты</msg>
+      <msg name="hint_timeout">Задаёт срок, в течение которого пользователь должен завершить платёж.</msg>
+      <msg name="attempts">Попыток оплаты</msg>
+      <msg name="hint_attempts">Задаёт сколько попыток оплаты может сделать пользователь на странице оплаты провайдера платежей.</msg>
       <msg name="test_mode">Тестовый режим</msg>
       <msg name="hint_test_mode">Реального движения денежных средств по операциям не происходит. Обеспечивается лишь информационный обмен.</msg>
       <msg name="kassa">Использовать онлайн-кассу</msg>

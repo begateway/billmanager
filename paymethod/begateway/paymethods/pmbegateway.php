@@ -47,7 +47,7 @@ try
 
 		if (!preg_match("/^\d+$/", $MNT_ID))
 		{
-			throw new Error("Incorrect value (Недопустимое значение)", "MNT_ID", $MNT_ID);
+			throw new ISPErrorException("Incorrect value (Недопустимое значение)", "MNT_ID", $MNT_ID);
 		}
 
 		echo $paymethod_form->asXML();
@@ -55,7 +55,7 @@ try
 */
 	else
 	{
-		throw new Error("Unknown command / Неизвестная команда");
+		throw new ISPErrorException("Unknown command / Неизвестная команда");
 	}
 } catch (Exception $e)
 {

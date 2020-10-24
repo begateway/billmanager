@@ -91,7 +91,7 @@ function _currency_power($currency) {
 
   $power = 2; //default value
   foreach ($exceptions as $key => $value) {
-      if (($this->_currency == $key)) {
+      if (($currency == $key)) {
           $power = $value;
           break;
       }
@@ -100,6 +100,6 @@ function _currency_power($currency) {
 }
 
 function _currency_multiplyer($currency) {
-  return pow(10,$this->_currency_power($currency));
+  return pow(10,_currency_power($currency));
 }
 ?>

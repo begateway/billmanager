@@ -13,55 +13,73 @@ $param = CgiInput();
 
 if ($param["auth"] == "")
 {
-	throw new Error("no auth info");
+	throw new ISPErrorException("no auth info");
 } else
 {
 	$info = LocalQuery("payment.info", array("elid" => $param["elid"]));
-	$payment = (string)$info->payment[0];
 
-	$shop_id = $payment->paymethod[1]->SHOP_ID;
-  $shop_key = $payment->paymethod[1]->SHOP_KEY;
-  $currency = $payment->currency[1]->iso;
-	$amount = intval(strval($payment->paymethodamount * _currency_multiplyer($currency)));
+	$payment = $info->payment[0];
 
-  list($first_name,$last_name) = explode(" ", $payment->userrealname);
+	$shop_id = (string)$payment->paymethod[1]->SHOP_ID;
+  $shop_key = (string)$payment->paymethod[1]->SHOP_KEY;
+  $timeout = intval((string)$payment->paymethod[1]->TIMEOUT);
+  $attempts = intval((string)$payment->paymethod[1]->ATTEMPTS);
 
-	$api_url = 'https://' . $payment->paymethod[1]->CHECKOUT_DOMAIN;
+  $currency = (string)$payment->currency[1]->iso;
+	$amount = intval(strval(floatval($payment->paymethodamount) * _currency_multiplyer($currency)));
+
+  $customer_name = explode(" ", (string)$payment->userrealname);
+  $first_name = (isset($customer_name[0])) ? $customer_name[0] : '';
+  $last_name = (isset($customer_name[1])) ? $customer_name[1] : '';
+
+  $payment_attributes = $info->payment->attributes();
+  $lang = (isset($payment_attributes->lang)) ? (string)$payment_attributes->lang : 'en';
+
+	$api_url = 'https://' . (string)$payment->paymethod[1]->CHECKOUT_DOMAIN;
+
+  $notification_url = (string)$payment->manager_url . "/mancgi/begatewaypayurl.php";
+  $notification_url = str_replace('0.0.0.0:1500', 'webhook.begateway.com:8443', $notification_url);
 
   $token_data = array(
     'checkout' => array(
       'transaction_type' => 'payment',
-      'test' => $payment->paymethod[1]->TEST_MODE == 'on',
-      #'attempts' => 5,
+      'test' => (string)$payment->paymethod[1]->TEST_MODE == 'on',
       'order' => array(
         'amount' => $amount,
         'currency' => $currency,
-        'description' => $payment->description,
-        'tracking_id' => $payment->id,
-        #'expired_at' => '2030-12-30T21:21:46+0000',
-        // 'additional_data' => array(
-        //     'receipt_text' => array(),
-        //     'contract' => array(),
-        //     'meta' => array()
-        // )
+        'description' => (string)$payment->description,
+        'tracking_id' => (string)$payment->id,
+        'additional_data' => array(
+          'meta' => array(
+            'cms' => 'billmanager'
+          )
+        )
       ),
       'settings' => array(
-        'success_url' => (string)$payment->manager_url . "?func=payment.success&elid=" . $payment->id . "&module=" . __MODULE__,
+        'success_url' => (string)$payment->manager_url . "?func=payment.success&elid=" . (string)$payment->id . "&module=" . __MODULE__,
         'cancel_url' => (string)$payment->manager_url . "?startpage=payment",
-        'decline_url' => (string)$payment->manager_url . "?func=payment.fail&elid=" . $payment->id . "&module=" . __MODULE__,
+        'decline_url' => (string)$payment->manager_url . "?func=payment.fail&elid=" . (string)$payment->id . "&module=" . __MODULE__,
         'fail_url' => (string)$payment->manager_url . "?startpage=payment",
-        'notification_url' => (string)$payment->manager_url . "/mancgi/begatewaypayurl.php",
-        #'language' => 'zh',
+        'notification_url' => $notification_url,
+        'language' => $lang
       ),
       'customer' => array(
-        'email' => $payment->useremail,
-        'phone' => $payment->phone,
+        'email' => (string)$payment->useremail,
+        'phone' => (string)$payment->userphone,
         'first_name' => $first_name,
         'last_name' => $last_name,
         'ip' => $client_ip
       )
     )
   );
+
+  if ($timeout > 0) {
+    $token_data['checkout']['order']['expired_at'] = date("c", $timeout*60 + time());
+  }
+
+  if ($attempts > 0) {
+    $token_data['checkout']['order']['attempts'] = $attempts;
+  }
 
   $ctp_url = $api_url . '/ctp/api/checkouts';
   $post_string = json_encode($token_data);
@@ -149,7 +167,7 @@ function _currency_power($currency) {
 
   $power = 2; //default value
   foreach ($exceptions as $key => $value) {
-      if (($this->_currency == $key)) {
+      if (($currency == $key)) {
           $power = $value;
           break;
       }
@@ -158,6 +176,6 @@ function _currency_power($currency) {
 }
 
 function _currency_multiplyer($currency) {
-  return pow(10,$this->_currency_power($currency));
+  return pow(10,_currency_power($currency));
 }
 ?>
