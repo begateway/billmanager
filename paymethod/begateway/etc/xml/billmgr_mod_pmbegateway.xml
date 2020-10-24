@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mgrdata>
+  <plugin name="pmbegateway.php">
+    <group>payment_method</group>
+    <author>BeGateway</author>
+    <msg name="desc_short" lang="ru">BeGateway</msg>
+    <msg name="desc_short" lang="en">BeGateway</msg>
+    <msg name="desc_full" lang="ru">Модуль оплаты BeGateway</msg>
+    <msg name="desc_full" lang="en">BeGateway payment module</msg>
+    <msg name="price" lang="ru">Бесплатно</msg>
+    <msg name="price" lang="en">Free</msg>
+  </plugin>
+
+  <metadata name="paymethod.edit.begateway.php" type="form">
+    <form>
+      <page name="methodprops">
+        <field name="checkout_domain">
+          <input name="CHECKOUT_DOMAIN" private="no" required="yes" type="text" />
+        </field>
+        <field name="shop_id">
+          <input name="SHOP_ID" private="no" required="yes" type="text" />
+        </field>
+        <field name="shop_key">
+          <input name="SHOP_KEY" private="yes" required="yes" type="text" />
+        </field>
+        <field name="shop_public_key">
+          <input name="SHOP_PUBLIC_KEY" private="yes" required="yes" type="textarea" />
+        </field>
+        <field name="test_mode">
+          <input name="TEST_MODE" private="no" type="checkbox" />
+        </field>
+        <field name="kassa">
+          <input name="KASSA" private="no" type="checkbox" />
+        </field>
+      </page>
+    </form>
+  </metadata>
+
+  <lang name="en">
+    <messages name="label_paymethod">
+      <msg name="pmbegateway.php">BeGateway payment module</msg>
+      <msg name="module_pmbegateway.php">BeGateway payment module</msg>
+    </messages>
+
+    <messages name="paymethod.edit.begateway.php">
+      <msg name="checkout_domain">Checkout domain</msg>
+      <msg name="hint_checkout_domain">Checkout domain of your payment service provider e.g. checkout.domain.com.</msg>
+      <msg name="shop_id">Shop ID</msg>
+      <msg name="hint_shop_id">The unique identifier of the merchant shop.</msg>
+      <msg name="shop_key">Shop secret key</msg>
+      <msg name="hint_shop_key">Specifies a character string that your online store must use to authorize with BeGateway API.</msg>
+      <msg name="shop_public_key">Shop public key</msg>
+      <msg name="hint_shop_public_key">Specifies a character string that your online store must use to verify signature of messages from BeGateway API.</msg>
+      <msg name="test_mode">Test mode</msg>
+      <msg name="hint_test_mode">Indicates whether to process the payment in Test mode.</msg>
+      <msg name="kassa">Use online kassa</msg>
+      <msg name="hint_kassa">Provides fiscalization of the cash register receipt.</msg>
+    </messages>
+  </lang>
+
+  <lang name="ru">
+    <messages name="label_paymethod">
+      <msg name="pmbegateway.php">Платежный модуль BeGateway</msg>
+      <msg name="module_pmbegateway.php">Платежный модуль BeGateway</msg>
+    </messages>
+
+    <messages name="paymethod.edit.begateway.php">
+      <msg name="checkout_domain">Домен страницы оплаты</msg>
+      <msg name="hint_checkout_domain">Домен страницы оплаты вашего провайдера платежей. Например, checkout.domain.com.</msg>
+      <msg name="shop_id">ID магазина</msg>
+      <msg name="hint_shop_id">Идентификатор магазина в системе вашего провайдера платежей.</msg>
+      <msg name="shop_key">Секретный ключ магазина</msg>
+      <msg name="hint_shop_key">Секретный ключ вашего магазина, который обеспечивает идентификацию и авторизацию отправителя запроса.</msg>
+      <msg name="shop_public_key">Публичный ключ магазина</msg>
+      <msg name="hint_shop_public_key">Публичный ключ вашего магазина, который проверяет подлинность запросов от BeGateway API.</msg>
+      <msg name="test_mode">Тестовый режим</msg>
+      <msg name="hint_test_mode">Реального движения денежных средств по операциям не происходит. Обеспечивается лишь информационный обмен.</msg>
+      <msg name="kassa">Использовать онлайн-кассу</msg>
+      <msg name="hint_kassa">Обеспечивает фискализацию кассового чека.</msg>
+    </messages>
+  </lang>
+</mgrdata>
