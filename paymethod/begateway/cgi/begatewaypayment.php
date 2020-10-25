@@ -37,7 +37,9 @@ if ($param["auth"] == "")
 
 	$api_url = 'https://' . (string)$payment->paymethod[1]->CHECKOUT_DOMAIN;
 
-  $notification_url = (string)$payment->manager_url . "/mancgi/begatewaypayurl.php";
+  $notification_url = parse_url((string)$payment->manager_url);
+  $notification_url = $notification_url['scheme'] . '://' . $notification_url['host'] . ':' . $notification_url['port'];
+  $notification_url = $notification_url . "/mancgi/begatewaypayurl.php";
   $notification_url = str_replace('0.0.0.0:1500', 'webhook.begateway.com:8443', $notification_url);
 
   $token_data = array(
