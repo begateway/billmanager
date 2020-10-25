@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 set_include_path(get_include_path() . PATH_SEPARATOR . "/usr/local/mgr5/include/php");
-define('__MODULE__', "pmbegateway");
+define('__MODULE__', "begatewaypayment");
 require_once 'bill_util.php';
 
 header('Content-Type: text/html');

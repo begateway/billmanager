@@ -35,9 +35,6 @@
         <field name="test_mode">
           <input name="TEST_MODE" private="no" type="checkbox" />
         </field>
-        <field name="kassa">
-          <input name="KASSA" private="no" type="checkbox" />
-        </field>
       </page>
     </form>
   </metadata>
@@ -63,8 +60,6 @@
       <msg name="hint_attempts">Specifies how many payment attempts a customer may do to complete their payment.</msg>
       <msg name="test_mode">Test mode</msg>
       <msg name="hint_test_mode">Indicates whether to process the payment in Test mode.</msg>
-      <msg name="kassa">Use online kassa</msg>
-      <msg name="hint_kassa">Provides fiscalization of the cash register receipt.</msg>
     </messages>
   </lang>
 
@@ -89,8 +84,6 @@
       <msg name="hint_attempts">Задаёт сколько попыток оплаты может сделать пользователь на странице оплаты провайдера платежей.</msg>
       <msg name="test_mode">Тестовый режим</msg>
       <msg name="hint_test_mode">Реального движения денежных средств по операциям не происходит. Обеспечивается лишь информационный обмен.</msg>
-      <msg name="kassa">Использовать онлайн-кассу</msg>
-      <msg name="hint_kassa">Обеспечивает фискализацию кассового чека.</msg>
     </messages>
   </lang>
 </mgrdata>
