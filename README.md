@@ -1,6 +1,6 @@
 # Платёжный модуль BeGateway для Billmanager
 
-Этот платёжный модуль для CS-Cart позволит вам принимать платежи через провайдера платежей, работающего на платформе beGateway.
+Этот платёжный модуль для Billmanager позволит вам принимать платежи через провайдера платежей, работающего на платформе beGateway.
 
 ## Требования
 
@@ -88,7 +88,7 @@ If you setup the module with default values, you can use the test data to make a
 
 ### Test card details
 
-  * Card ```4200000000000000``` to get succesful payment
+  * Card ```4200000000000000``` to get successful payment
   * Card ```4005550000000019``` to get failed payment
   * Card name ```JOHN DOE```
   * Card expiry date ```01/30```
