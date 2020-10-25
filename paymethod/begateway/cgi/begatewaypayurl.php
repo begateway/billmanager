@@ -1,15 +1,35 @@
 #!/usr/bin/php
 <?php
 set_include_path(get_include_path() . PATH_SEPARATOR . "/usr/local/mgr5/include/php");
-define('__MODULE__', "pmbegatewaypayurl");
+define('__MODULE__', "pmbegateway");
+
+echo "Content-Type: text/html\n\n";
 
 require_once 'bill_util.php';
 
 $postData =  (string)file_get_contents("php://input");
 
+if ($_SERVER["REQUEST_METHOD"] == 'POST'){
+    $size = $_SERVER["CONTENT_LENGTH"];
+    if ($size == 0) {
+        $size =	$_SERVER["HTTP_CONTENT_LENGTH"];
+    }
+    if (!feof(STDIN)) {
+        $input = fread(STDIN, $size);
+    }
+} else {
+  Debug("Webhook: method not allowed");
+  die('Method not allowed');
+}
+
+$postData = $input;
+
 $post_array = json_decode($postData, true);
 
+Debug("Webhook: " . $postData);
+
 if (!isset($post_array['transaction'])) {
+  Debug("Webhook: No data");
   die("No data");
 }
 
@@ -17,6 +37,7 @@ $payment_id = $post_array['transaction']['tracking_id'];
 $info = LocalQuery("payment.info", array('elid' => $payment_id));
 
 if (empty($info)) {
+  Debug("Webhook: No payment found for payment id " . $payment_id);
   die("No payment found");
 }
 
@@ -24,15 +45,17 @@ $shop_id = $info->payment->paymethod[1]->SHOP_ID;
 $shop_key = $info->payment->paymethod[1]->SHOP_KEY;
 $shop_public_key = $info->payment->paymethod[1]->SHOP_PUBLIC_KEY;
 
-if (!isset($_SERVER['Content-Signature'])) {
+if (!isset($_SERVER['CONTENT_SIGNATURE'])) {
+  Debug("Webhook: No signature");
   die('No signature');
 }
 
-$signature = base64_decode($_SERVER['Content-Signature']);
+$signature = base64_decode($_SERVER['CONTENT_SIGNATURE']);
 $public_key = "-----BEGIN PUBLIC KEY-----\n$shop_public_key\n-----END PUBLIC KEY-----";
 $key = openssl_pkey_get_public($public_key);
 
 if (openssl_verify($postData, $signature, $key, OPENSSL_ALGO_SHA256) != 1) {
+  Debug("Webhook: signature mismatch");
   die('Not authorized');
 }
 
@@ -42,22 +65,24 @@ $message = $post_array['transaction']['message'];
 $currency = $info->payment->currency[1]->iso;
 
 if (intval($info->payment->paymethodamount * _currency_multiplyer($currency)) != $post_array['transaction']['amount']) {
+  Debug("Webhook: invalid amount");
   die('Invalid amount');
 }
 
 if ($currency != $post_array['transaction']['currency']) {
+  Debug("Webhook: invalid currency");
   die('Invalid currency');
 }
 
 if ($post_array['transaction']['test']) {
-  $message .= '***TEST MODE*** ';
+  $message = '***TEST MODE*** ' . $message;
 }
 
 $method = null;
 
 if ($status == 'successful') {
   $method = "payment.setpaid";
-} elseif ($satus == 'failed' || $status = 'expired') {
+} elseif ($satus == 'failed' || $status == 'expired') {
   $method = "payment.setnopay";
 } elseif ($status == "pending") {
   $method = "payment.setinpay";
@@ -71,9 +96,12 @@ if (!is_null($method)) {
       'externalid' => $uid
     )
   );
+
+  Debug("Webhook: " . $method . " processed. External id " . $uid);
   die("OK");
 }
 
+Debug("Webhook: no updates");
 die("No updates");
 
 function _currency_power($currency) {
