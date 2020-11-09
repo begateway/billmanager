@@ -1,0 +1,65 @@
+#!/usr/bin/php
+<?php
+
+set_include_path(get_include_path() . PATH_SEPARATOR . "/usr/local/mgr5/include/php");
+define('__MODULE__', "pmbegateway");
+
+require_once 'bill_util.php';
+
+$longopts = array(
+	"command:",
+	"payment:",
+	"amount:",
+);
+
+$options = getopt("", $longopts);
+
+/**
+ * Processing --command
+ */
+try
+{
+	$command = $options['command'];
+	Debug("command " . $options['command']);
+
+	if ($command == "config")
+	{
+		$config_xml = simplexml_load_string($default_xml_string);
+		$feature_node = $config_xml->addChild("feature");
+
+		$feature_node->addChild("redirect",       "on");
+		$feature_node->addChild("notneedprofile", "on");
+    $feature_node->addChild("refund", 		    "on");
+    $feature_node->addChild("rfset", 		      "on");
+    $feature_node->addChild("rftune", 		    "off");
+    $feature_node->addChild("rfvalidate", 		"off");
+    $feature_node->addChild("rcpay", 		      "on");
+    $feature_node->addChild("rcset", 		      "off");
+    $feature_node->addChild("rctune", 		    "off");
+    $feature_node->addChild("rcvalidate",     "off");
+    $feature_node->addChild("recurring", 		  "on");
+    $feature_node->addChild("stored", 		    "on");
+
+		$param_node = $config_xml->addChild("param");
+
+		$param_node->addChild("payment_script", "/mancgi/begatewaypayment.php");
+		$param_node->addChild("recurring_script", "/mancgi/begatewayrecurring.php");
+    // 8 - для регистрации платежа требуется указание максимально суммы
+    // 20 - для подтверждения рекуррентного платежа требуется переадресация в платежную систему
+    // recurring_type - это тип uint32_t, в котором выставлены определенные
+    // биты. Цифры 7, 8 и 20 это порядковые номера битов. Нумерация начинается с
+    // 0. В вашем случае это число 1048832.
+		$param_node->addChild("recurring_type", "1048832");
+
+		echo $config_xml->asXML();
+	}
+	else
+	{
+		throw new ISPErrorException("Unknown command / Неизвестная команда");
+	}
+} catch (Exception $e)
+{
+	echo $e;
+}
+
+?>
