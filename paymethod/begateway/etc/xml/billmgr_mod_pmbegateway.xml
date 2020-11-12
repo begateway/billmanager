@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mgrdata>
-  <plugin name="pmbegateway.php">
+  <plugin name="pmbegateway">
     <group>payment_method</group>
     <author>BeGateway</author>
     <msg name="desc_short" lang="ru">BeGateway</msg>
@@ -11,7 +11,7 @@
     <msg name="price" lang="en">Free</msg>
   </plugin>
 
-  <metadata name="paymethod.edit.begateway.php" type="form">
+  <metadata name="paymethod.edit.begateway" type="form">
     <form>
       <page name="methodprops">
         <field name="checkout_domain">
@@ -41,11 +41,11 @@
 
   <lang name="en">
     <messages name="label_paymethod">
-      <msg name="pmbegateway.php">BeGateway payment module</msg>
-      <msg name="module_pmbegateway.php">BeGateway payment module</msg>
+      <msg name="pmbegateway">BeGateway payment module</msg>
+      <msg name="module_pmbegateway">BeGateway payment module</msg>
     </messages>
 
-    <messages name="paymethod.edit.begateway.php">
+    <messages name="paymethod.edit.begateway">
       <msg name="checkout_domain">Checkout domain</msg>
       <msg name="hint_checkout_domain">Checkout domain of your payment service provider e.g. checkout.domain.com.</msg>
       <msg name="shop_id">Shop ID</msg>
@@ -65,11 +65,11 @@
 
   <lang name="ru">
     <messages name="label_paymethod">
-      <msg name="pmbegateway.php">Платежный модуль BeGateway</msg>
-      <msg name="module_pmbegateway.php">Платежный модуль BeGateway</msg>
+      <msg name="pmbegateway">Платежный модуль BeGateway</msg>
+      <msg name="module_pmbegateway">Платежный модуль BeGateway</msg>
     </messages>
 
-    <messages name="paymethod.edit.begateway.php">
+    <messages name="paymethod.edit.begateway">
       <msg name="checkout_domain">Домен страницы оплаты</msg>
       <msg name="hint_checkout_domain">Домен страницы оплаты вашего провайдера платежей. Например, checkout.domain.com.</msg>
       <msg name="shop_id">ID магазина</msg>
