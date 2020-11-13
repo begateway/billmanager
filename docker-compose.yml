@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  billmanager: &default
+    build: &build
+      context: ./docker
+      dockerfile: Dockerfile.adv
+    ports:
+      - 1500:1500
+    hostname: 'begateway.local'
+    tty: true
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      BILLMGR_PASSWD: root
+      HISTFILE: /root/hist/.bash_history
+      # zero-length the variable to test how the module installs using Makefile
+      DEV:
+    volumes:
+      - bashhistory:/root/hist
+      - ./include/:/usr/local/src/begateway/include
+      - ./paymethod:/usr/local/src/begateway/paymethod
+      - ./billmanager_begateway.tar.gz:/usr/local/src/begateway/module/billmanager_begateway.tar.gz
+volumes:
+  bashhistory:

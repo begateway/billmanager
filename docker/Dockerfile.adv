@@ -1,0 +1,39 @@
+# Billmanager-advanced
+#
+# VERSION 0.0.1
+FROM debian:jessie
+
+ENV CORE_DIR /usr/local/mgr5
+ENV DEBIAN_FRONTEND noninteractive
+ENV TERM xterm
+
+RUN	apt-get -y update && apt-get install -y --no-install-recommends wget vim \
+    php5-cli php5-common php5-curl php5-json php5-mysql libexpat1 \
+    libpython-stdlib libpython2.7-minimal libpython2.7-stdlib \
+    libsqlite3-0 python-minimal python2.7 python2.7-minimal gpgv2
+
+RUN wget -O /ispsystem.gpg.key http://download.ispsystem.com/repo/debian/ispsystem.gpg.key && \
+  apt-key add /ispsystem.gpg.key && \
+  rm -f /ispsystem.gpg.key && \
+  wget http://dl.ispsystem.com/install.sh && \
+	sh install.sh --release stable --ignore-hostname --silent --disable-fail2ban --noinstall && \
+  apt-get -y update && \
+  apt-get -y --no-install-recommends install billmanager
+
+RUN service mysql stop && \
+	rm -rf /var/lib/mysql && \
+	echo > ${CORE_DIR}/etc/billmgr.conf.d/db.conf && \
+	rm -f ${CORE_DIR}/etc/manager.{key,crt} && rm -f ${CORE_DIR}/etc/ihttpd.conf && \
+	sed -i -r 's/^(password\s*=).*/\1/' /etc/mysql/debian.cnf && \
+	sed -i -r 's/^(user\s*=).*/\1/' /etc/mysql/debian.cnf && \
+	mkdir -p /var/lib/mysql && mysql_install_db && service mysql start && mysqladmin create billmgr5 && \
+	${CORE_DIR}/sbin/mgrctl -m billmgr whoami || ${CORE_DIR}/sbin/mgrctl -m billmgr whoami || ${CORE_DIR}/sbin/mgrctl -m billmgr whoami && \
+	rm -f ${CORE_DIR}/etc/billmgr.lic
+
+VOLUME ["/usr/local/mgr5"]
+
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+EXPOSE 1500
+CMD ["billmgr"]
