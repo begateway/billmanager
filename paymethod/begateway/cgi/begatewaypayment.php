@@ -11,6 +11,14 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 $client_ip = ClientIp();
 $param = CgiInput();
 
+$lang = _get_locale_lang("billmgrlang5");
+
+if (is_null($lang)) {
+  $lang = _get_locale_lang("billmgrlang6");
+}
+
+$lang = (is_null($lang)) ? 'en' : $lang;
+
 if ($param["auth"] == "")
 {
 	throw new ISPErrorException("no auth info");
@@ -31,9 +39,6 @@ if ($param["auth"] == "")
   $customer_name = explode(" ", (string)$payment->userrealname);
   $first_name = (isset($customer_name[0])) ? $customer_name[0] : '';
   $last_name = (isset($customer_name[1])) ? $customer_name[1] : '';
-
-  $payment_attributes = $info->payment->attributes();
-  $lang = (isset($payment_attributes->lang)) ? (string)$payment_attributes->lang : 'en';
 
 	$api_url = 'https://' . (string)$payment->paymethod[1]->CHECKOUT_DOMAIN;
 
@@ -103,7 +108,13 @@ if ($param["auth"] == "")
   curl_setopt($curl, CURLOPT_USERPWD, "$shop_id:$shop_key");
   curl_setopt($curl, CURLOPT_POSTFIELDS, $post_string);
 
-  $response = curl_exec($curl) or die(curl_error($curl));
+  $response = curl_exec($curl);
+
+  if ($response === false) {
+    Debug("Response: cURL error " . curl_error($curl));
+    die;
+  }
+
   curl_close($curl);
 
   Debug("Response: " . $response);
@@ -179,5 +190,25 @@ function _currency_power($currency) {
 
 function _currency_multiplyer($currency) {
   return pow(10,_currency_power($currency));
+}
+
+function _get_locale_lang($cookie_name) {
+  $lang = null;
+
+  if (isset($_COOKIE[$cookie_name])) {
+    Debug("Language by standart cookie");
+    $cookie = $_COOKIE[$cookie_name];
+    list($area, $lang) = explode(":", $cookie);
+  } elseif (isset($_SERVER["HTTP_COOKIE"])) {
+    Debug("Language by server cookie");
+    $cookies = explode("; ", $_SERVER["HTTP_COOKIE"]);
+    foreach ($cookies as $cookie) {
+      $param_line = explode("=", $cookie);
+      if (count($param_line) > 1 && $param_line[0] == $cookie_name) {
+        list($area, $lang) = explode(":", $param_line[1]);
+      }
+    }
+  }
+  return $lang;
 }
 ?>

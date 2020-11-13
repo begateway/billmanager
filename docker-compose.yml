@@ -16,7 +16,7 @@ services:
       BILLMGR_PASSWD: root
       HISTFILE: /root/hist/.bash_history
       # zero-length the variable to test how the module installs using Makefile
-      DEV:
+      DEV: 1
     volumes:
       - bashhistory:/root/hist
       - ./include/:/usr/local/src/begateway/include

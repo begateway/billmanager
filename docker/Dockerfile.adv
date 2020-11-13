@@ -9,7 +9,7 @@ ENV TERM xterm
 
 RUN	apt-get -y update && apt-get install -y --no-install-recommends wget vim \
     php5-cli php5-common php5-curl php5-json php5-mysql libexpat1 \
-    libpython-stdlib libpython2.7-minimal libpython2.7-stdlib \
+    libpython-stdlib libpython2.7-minimal libpython2.7-stdlib ca-certificates \
     libsqlite3-0 python-minimal python2.7 python2.7-minimal gpgv2
 
 RUN wget -O /ispsystem.gpg.key http://download.ispsystem.com/repo/debian/ispsystem.gpg.key && \
