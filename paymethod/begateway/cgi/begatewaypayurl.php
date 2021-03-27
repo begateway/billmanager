@@ -66,7 +66,12 @@ $currency = $info->payment->currency[1]->iso;
 
 if (intval($info->payment->paymethodamount * _currency_multiplyer($currency)) != $post_array['transaction']['amount']) {
   Debug("Webhook: invalid amount");
-  die('Invalid amount');
+  $message = print_r($info, true);
+  $message = $message . ' ------ ';
+  $message = $message . $currency . ' ' . _currency_multiplyer($currency);
+  $message = $message . ' ------ ' . $post_array['transaction']['amount'];
+
+  die('Invalid amount'. $message);
 }
 
 if ($currency != $post_array['transaction']['currency']) {
