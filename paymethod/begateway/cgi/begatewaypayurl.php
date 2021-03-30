@@ -63,13 +63,14 @@ $status = $post_array['transaction']['status'];
 $uid = $post_array['transaction']['uid'];
 $message = $post_array['transaction']['message'];
 $currency = $info->payment->currency[1]->iso;
+$amount = intval(strval(floatval($info->payment->paymethodamount) * _currency_multiplyer($currency)));
 
-if (intval($info->payment->paymethodamount * _currency_multiplyer($currency)) != $post_array['transaction']['amount']) {
+if ($amount != intval($post_array['transaction']['amount'])) {
   Debug("Webhook: invalid amount");
-  $message = print_r($info, true);
   $message = $message . ' ------ ';
   $message = $message . $currency . ' ' . _currency_multiplyer($currency);
   $message = $message . ' ------ ' . $post_array['transaction']['amount'];
+  $message = $message . ' ------ ' . $amount;
 
   die('Invalid amount'. $message);
 }
