@@ -69,7 +69,7 @@ if ($amount != intval($post_array['transaction']['amount'])) {
   Debug("Webhook: invalid amount");
   $message = $message . ' ------ ';
   $message = $message . $currency . ' ' . _currency_multiplyer($currency);
-  $message = $message . ' ------ ' . $post_array['transaction']['amount'];
+  $message = $message . ' ------ ' . intval($post_array['transaction']['amount']);
   $message = $message . ' ------ ' . $amount;
 
   die('Invalid amount'. $message);
