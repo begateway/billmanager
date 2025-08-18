@@ -15,7 +15,7 @@ jobs:
       with:
         type: 'zip'
         filename: 'billmanager_begateway.zip'
-        exclusions: ''
+        path: './paymethod/'
 
     - name: Upload Release
       uses: ncipollo/release-action@v1.12.0
