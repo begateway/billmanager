@@ -18,7 +18,7 @@ apt-get -y --no-install-recommends install php-cli php-common php-curl php-json 
 
 1. Скачайте [последнюю версию платёжного модуля](https://github.com/begateway/billmanager/raw/master/billmanager_begateway.tar.gz)
 2. Распакуйте архив на сервере с установленным Billmanager
-3. Перейдите в директорию `begateway`
+3. Перейдите в директорию `paymethod/begateway`
 4. Выполните команду `sh install.sh`
 
 Зайдите как администратор в Billmanager и в разделе _Провайдер → Методы оплаты_ добавьте модуль оплаты __BeGateway__.
