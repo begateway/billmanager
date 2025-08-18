@@ -10,14 +10,12 @@ ExitError() {
 InstallDeps() {
 	Info "Install dependencies..."
 
-	PKGS="php-cli php-mysqli php-xml"
+	PKGS="php-cli php-mysqli php-xml php-curl php-json"
 
 	case ${OSTYPE} in
 		REDHAT)
-			PKGS+=""
 		;;
 		DEBIAN)
-			PKGS+=""
 		;;
 		*)
 			ExitError "Unknown os type"
