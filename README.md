@@ -1,24 +1,25 @@
 # Платёжный модуль BeGateway для Billmanager
 
-Этот платёжный модуль для Billmanager позволит вам принимать платежи через провайдера платежей, работающего на платформе beGateway.
+Этот платёжный модуль для Billmanager 6.103.0 и выше позволит вам принимать платежи через провайдера платежей, работающего на платформе beGateway.
 
 ## Требования
 
-  * Установленный на сервере PHP 5.4+
-  * Поддержка PHP модулей: `php5-curl`,`php5-json` и `php5-mysql`
+  * Установленный на сервере PHP
+  * Поддержка PHP модулей: `php-curl`,`php-json`, `php-xml` и `php-mysqli`
 
 Пример установки PHP на Debian Jessie
 
 ```
 apt-get -y update
-apt-get -y --no-install-recommends install php5-cli php5-common php5-curl php5-json php5-mysql
+apt-get -y --no-install-recommends install php-cli php-common php-curl php-json php-xml php-mysqli
 ```
 
 ## Установка
 
 1. Скачайте [последнюю версию платёжного модуля](https://github.com/begateway/billmanager/raw/master/billmanager_begateway.tar.gz)
 2. Распакуйте архив на сервере с установленным Billmanager
-3. Выполните команду `make install`
+3. Перейдите в директорию `begateway`
+4. Выполните команду `sh install.sh`
 
 Зайдите как администратор в Billmanager и в разделе _Провайдер → Методы оплаты_ добавьте модуль оплаты __BeGateway__.
 
